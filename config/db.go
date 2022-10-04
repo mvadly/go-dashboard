@@ -30,6 +30,7 @@ func LoadEnv(key string) interface{} {
 func DB() *mongo.Database {
 	clientOptions := options.Client()
 	uri := LoadEnv("MONGODB_URI").(string)
+	fmt.Println("uri:", uri)
 	clientOptions.ApplyURI(uri)
 
 	client, err := mongo.NewClient(clientOptions)
