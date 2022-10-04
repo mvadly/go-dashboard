@@ -6,7 +6,7 @@ import (
 )
 
 // "username": "mvadly",
-//         "password": "jqQY22._"
+//         "password": "pmZY39!!",
 
 func main() {
 	var db = config.DB()

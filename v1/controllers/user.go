@@ -6,7 +6,7 @@ import (
 	"go-dashboard/v1/services"
 	"net/http"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 type userCtrl struct {
@@ -14,6 +14,7 @@ type userCtrl struct {
 }
 
 type UserControllers interface {
+	Login(c echo.Context) error
 	Create(c echo.Context) error
 }
 
@@ -23,11 +24,37 @@ func NewUserControllers(svc services.UserServices) UserControllers {
 	}
 }
 
+func (con *userCtrl) Login(c echo.Context) error {
+	var user models.Users
+	err := c.Bind(&user)
+	if err != nil {
+		return util.JSON(c, http.StatusBadRequest, util.ResJSON{
+			Code:    "01",
+			Message: err.Error(),
+		})
+	}
+
+	res, err := con.svc.Login(user)
+	if err != nil {
+		return util.JSON(c, res.Code, util.ResJSON{
+			Code:    "01",
+			Message: err.Error(),
+		})
+
+	}
+
+	return util.JSON(c, http.StatusOK, util.ResJSON{
+		Code:    "00",
+		Message: res.Message,
+		Data:    res.Response,
+	})
+
+}
 func (con *userCtrl) Create(c echo.Context) error {
 	var user models.Users
 	err := c.Bind(&user)
 	if err != nil {
-		util.JSON(c, http.StatusBadRequest, util.ResJSON{
+		return util.JSON(c, http.StatusBadRequest, util.ResJSON{
 			Code:    "01",
 			Message: err.Error(),
 		})
@@ -35,17 +62,15 @@ func (con *userCtrl) Create(c echo.Context) error {
 
 	res, err := con.svc.Create(user)
 	if err != nil {
-		util.JSON(c, res.Code, util.ResJSON{
+		return util.JSON(c, res.Code, util.ResJSON{
 			Code:    "01",
 			Message: err.Error(),
 		})
 	}
 
-	util.JSON(c, http.StatusOK, util.ResJSON{
+	return util.JSON(c, http.StatusOK, util.ResJSON{
 		Code:    "00",
 		Message: res.Message,
 		Data:    res.Response,
 	})
-
-	return nil
 }

@@ -1,12 +1,13 @@
 package routes
 
 import (
+	"go-dashboard/util/jwt"
 	"go-dashboard/v1/controllers"
 	"go-dashboard/v1/repositories"
 	"go-dashboard/v1/services"
-	"net/http"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -17,11 +18,10 @@ func User(e *echo.Echo, db *mongo.Database) *echo.Echo {
 		userCtrl controllers.UserControllers = controllers.NewUserControllers(userSvc)
 	)
 
-	v1 := e.Group("v1/user/")
-	v1.GET("hello", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
-	v1.POST("create", userCtrl.Create)
+	v1 := e.Group("/v1/")
+	v1.POST("login", userCtrl.Login)
+	v1.Use(middleware.JWTWithConfig(jwt.JwtConfig()))
+	v1.POST("user/create", userCtrl.Create)
 
 	return e
 
