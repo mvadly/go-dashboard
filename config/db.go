@@ -45,7 +45,7 @@ func DB() *mongo.Database {
 
 	if err := client.Ping(context.TODO(), readpref.Primary()); err != nil {
 		fmt.Println("mongodb failed...")
-		fmt.Println(err)
+		log.Panic(err)
 	}
 	return client.Database("dashboard")
 }
