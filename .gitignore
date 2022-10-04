@@ -1,4 +1,4 @@
-.env
-go.sum
-go.mod
+# .env
+# go.sum
+# go.mod
 __debug_bin.exe

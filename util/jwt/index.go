@@ -7,12 +7,10 @@ import (
 	"go-dashboard/config"
 	"go-dashboard/util"
 	"go-dashboard/v1/models"
-	"net/http"
 	"time"
 
 	"github.com/golang-jwt/jwt"
 	"github.com/google/uuid"
-	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	jwk "github.com/lestrrat-go/jwx/jwk"
 )
@@ -89,24 +87,5 @@ func JwtConfig() middleware.JWTConfig {
 	return middleware.JWTConfig{
 		Claims:     &SessionClaims{},
 		SigningKey: []byte(signingKey),
-
-		ErrorHandlerWithContext: func(err error, c echo.Context) error {
-			code := http.StatusInternalServerError
-			he, ok := err.(*echo.HTTPError)
-			if !ok {
-				return util.JSON(c, code, util.ResJSON{
-					Code:    "01",
-					Message: err.Error(),
-					Data:    nil,
-				})
-			}
-
-			return util.JSON(c, he.Code, util.ResJSON{
-				Code:    "01",
-				Message: he.Message.(string),
-				Data:    nil,
-			})
-		},
-		// KeyFunc: getKey,
 	}
 }
