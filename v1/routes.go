@@ -41,7 +41,7 @@ func customErrorHandler(err error, c echo.Context) {
 	util.JSON(c, code, util.ResJSON{
 		Code:    "01",
 		Message: msg,
-		Data:    he,
+		Data:    nil,
 	})
 
 }
