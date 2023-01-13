@@ -10,7 +10,7 @@ import (
 //         "password": "pmZY39!!",
 
 func main() {
-	fmt.Println("APP STARTED")
+	fmt.Println("APP STARTED...")
 	var db = config.DB()
 	v1.EchoRoute(db)
 }
