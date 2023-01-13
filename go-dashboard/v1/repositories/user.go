@@ -15,6 +15,7 @@ type MongoDB struct {
 type UserRepo interface {
 	Login(data interface{}) (results models.Users, err error)
 	Create(data interface{}) error
+	SaveMyImage(data interface{}) error
 }
 
 func NewUserRepo(db *mongo.Database) UserRepo {
@@ -43,6 +44,17 @@ func (db *MongoDB) Login(data interface{}) (results models.Users, err error) {
 func (db *MongoDB) Create(data interface{}) error {
 	ctx := context.TODO()
 	_, err := db.mongo.Collection("users").InsertOne(ctx, data)
+	if err != nil {
+		fmt.Println("error mongo connection: ", err)
+		return err
+	}
+
+	return nil
+}
+
+func (db *MongoDB) SaveMyImage(data interface{}) error {
+	ctx := context.TODO()
+	_, err := db.mongo.Collection("myimage").InsertOne(ctx, data)
 	if err != nil {
 		fmt.Println("error mongo connection: ", err)
 		return err

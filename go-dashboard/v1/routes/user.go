@@ -19,6 +19,7 @@ func User(e *echo.Echo, db *mongo.Database) *echo.Echo {
 	)
 
 	v1 := e.Group("/v1/")
+	v1.POST("save-my-image", userCtrl.SaveMyImage)
 	v1.POST("login", userCtrl.Login)
 	v1.Use(middleware.JWTWithConfig(jwt.JwtConfig()))
 	v1.POST("user/create", userCtrl.Create)
