@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
-	"os"
+	"strings"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -46,6 +46,8 @@ func TimeNow() time.Time {
 
 func ViewRoutes(route []*echo.Route) {
 	for _, v := range route {
-		fmt.Println(v.Method, "---", os.Getenv("APP_URL")+v.Path, "---", v.Name)
+		if strings.Contains(v.Name, "go-dashboard") {
+			fmt.Println(JsonEncode(v))
+		}
 	}
 }

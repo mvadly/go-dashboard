@@ -46,5 +46,5 @@ func DB() *mongo.Database {
 	// 	fmt.Println("mongodb failed...")
 	// 	log.Panic(err)
 	// }
-	return client.Database("dashboard")
+	return client.Database("learning")
 }

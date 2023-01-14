@@ -76,7 +76,6 @@ func (con *userCtrl) Create(c echo.Context) error {
 	})
 }
 
-
 func (con *userCtrl) SaveMyImage(c echo.Context) error {
 	var user models.RequestImage
 	err := c.Bind(&user)
