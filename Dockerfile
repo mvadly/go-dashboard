@@ -2,9 +2,9 @@ FROM golang:1.18
 
 ENV TZ=Asia/Jakarta
 
-WORKDIR /go-dashboard
+WORKDIR /api-go-dashboard
 
-COPY . /go-dashboard/
+COPY . /api-go-dashboard/
 
 #RUN rm go.mod
 
@@ -14,12 +14,12 @@ RUN ls -all
 
 RUN apt-get update && apt-get install nano telnet traceroute -y
 
-RUN go mod init go-dashboard
+RUN go mod init api-go-dashboard
 
 RUN go mod tidy
 
-RUN go build -o /go-dashboard
+RUN go build -o /api-go-dashboard
 
 EXPOSE 8080
 
-CMD [ "/go-dashboard" ]
+CMD [ "/api-go-dashboard" ]
