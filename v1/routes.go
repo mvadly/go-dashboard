@@ -2,7 +2,6 @@ package v1
 
 import (
 	"go-dashboard/util"
-	"go-dashboard/v1/middlewares"
 	"go-dashboard/v1/routes"
 	"net/http"
 	"os"
@@ -18,13 +17,16 @@ func EchoRoute(db *mongo.Database) {
 	e.Debug = true
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	e.Use(middlewares.Cors)
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+	}))
 	// e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
 	// 	TokenLookup: "header:X-XSRF-TOKEN",
 	// }))
 	routes.User(e, db)
-	util.ViewRoutes(e.Routes())
 	e.HTTPErrorHandler = customErrorHandler
+	util.ViewRoutes(e.Routes())
 	e.Logger.Fatal(e.Start(":" + os.Getenv("PORT")))
 
 }
@@ -41,7 +43,7 @@ func customErrorHandler(err error, c echo.Context) {
 	util.JSON(c, code, util.ResJSON{
 		Code:    "01",
 		Message: msg,
-		Data:    he,
+		Data:    nil,
 	})
 
 }

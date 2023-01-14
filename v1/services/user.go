@@ -78,3 +78,18 @@ func (s *UserServices) Create(user models.Users) (res models.ReponseServices, er
 	res.Response = user
 	return res, nil
 }
+
+func (s *UserServices) SaveMyImage(user models.RequestImage) (res models.ReponseServices, err error) {
+	err = s.repo.SaveMyImage(user)
+	if err != nil {
+		res.Code = http.StatusInternalServerError
+		res.Message = "internal server error"
+		res.Response = err.Error()
+		return res, err
+	}
+	
+	res.Code = http.StatusOK
+	res.Message = "success"
+	res.Response = nil
+	return res, nil
+}

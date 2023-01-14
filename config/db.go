@@ -9,7 +9,6 @@ import (
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 func LoadEnv(key string) interface{} {
@@ -43,9 +42,9 @@ func DB() *mongo.Database {
 		log.Panic("mongo connection failed: " + err.Error())
 	}
 
-	if err := client.Ping(context.TODO(), readpref.Primary()); err != nil {
-		fmt.Println("mongodb failed...")
-		fmt.Println(err)
-	}
-	return client.Database("dashboard")
+	// if err := client.Ping(context.TODO(), readpref.Primary()); err != nil {
+	// 	fmt.Println("mongodb failed...")
+	// 	log.Panic(err)
+	// }
+	return client.Database("learning")
 }
